@@ -1,5 +1,5 @@
 homepage: "www.sypher.eu"
 documentation: "https://www.sypher.eu/article/general/sypher-cookie-consent-google-tag-manager"
 versions:
-  - sha: a0d3bf3fecf9a4c71f20bf3922edbd8177e99a4d
+  - sha: 8d64a16df554a86c114cd28960e5d6e51adcce56
     changeNotes: Initial release
