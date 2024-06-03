@@ -250,11 +250,13 @@ const queryPermission = require('queryPermission');
 const setDefaultConsentState = require('setDefaultConsentState');
 const ls = require('localStorage');
 const log = require('logToConsole');
+const encodeUriComponent = require('encodeUriComponent');
+const encodeUri = require('encodeUri');
 
 let consentHost = data.testMode ? data.testHost : "https://cdn.sypher.eu/consent/";
 let configHost = data.testMode ? data.configHost : "https://consent.sypher.eu/cnst/";
-let consentJS = consentHost + 'script.min.js?uuid=' + data.websiteUuid;
-let configJS = configHost + data.websiteUuid + '.js';
+let consentJS = consentHost + 'script.min.js?uuid=' + encodeUriComponent(data.websiteUuid);
+let configJS = encodeUri(configHost + data.websiteUuid + '.js');
 
 if (data.overWriteCMDefaults) {
     let consentState = {};
@@ -280,17 +282,27 @@ if (data.overWriteCMDefaults) {
     ls.removeItem('sprGTMOverwriteDefaults');
 }
 
+var successCount = 0;
+var totalScripts = 2;
+
+function onSuccess() {
+    successCount++;
+    if (successCount === totalScripts) {
+        data.gtmOnSuccess();
+    }
+}
+
 if (queryPermission('inject_script', configJS)) {
-    injectScript(configJS, data.gtmOnSuccess, data.gtmOnFailure);
+    injectScript(configJS, onSuccess, data.gtmOnFailure);
+} else {
+  data.gtmOnFailure();
 }
 
 if (queryPermission('inject_script', consentJS)) {
-    injectScript(consentJS, data.gtmOnSuccess, data.gtmOnFailure);
+    injectScript(consentJS, onSuccess, data.gtmOnFailure);
+} else {
+  data.gtmOnFailure();
 }
-
-
-// Call data.gtmOnSuccess when the tag is finished.
-data.gtmOnSuccess();
 
 
 ___WEB_PERMISSIONS___
@@ -649,6 +661,6 @@ scenarios: []
 
 ___NOTES___
 
-Created on 5/31/2024, 1:03:08 PM
+Created on 6/3/2024, 4:35:29 PM
 
 
