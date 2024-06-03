@@ -2,11 +2,15 @@ homepage: "www.sypher.eu"
 documentation: "https://www.sypher.eu/article/general/sypher-cookie-consent-google-tag-manager"
 versions:
   # Latest version
+  - sha: 8721236fd1c112e03fea177519a2fe8d7b5e1746
+    changeNotes: |2
+      issue #2 - (fix) calling gtmOnSuccess() only once
+      issue #1 - using encodeUri and encodeUriComponent for variables which are used in urls
+  # Older versions
   - sha: 482d86130eabb7b7f8788a861d50ae26961305a1
     changeNotes: |2
       Updated icon with square version
       Fixed bug sending default wait_for_update
       Added brand name
-  # Older versions
   - sha: f6a6e35330542acd499bb70c35a2cdca8b602f30
     changeNotes: Initial release
