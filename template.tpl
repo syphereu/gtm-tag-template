@@ -55,7 +55,7 @@ ___TEMPLATE_PARAMETERS___
   {
     "type": "CHECKBOX",
     "name": "overWriteCMDefaults",
-    "checkboxText": "Overwrite Google Consent Mode defaults",
+    "checkboxText": "Overwrite Google Consent Mode defaults (Globally)",
     "simpleValueType": true
   },
   {
@@ -68,7 +68,6 @@ ___TEMPLATE_PARAMETERS___
         "type": "SELECT",
         "name": "ad_storage",
         "displayName": "ad_storage",
-        "macrosInSelect": false,
         "selectItems": [
           {
             "value": "denied",
@@ -79,7 +78,8 @@ ___TEMPLATE_PARAMETERS___
             "displayValue": "granted"
           }
         ],
-        "simpleValueType": true
+        "simpleValueType": true,
+        "macrosInSelect": false
       },
       {
         "type": "SELECT",
@@ -197,6 +197,212 @@ ___TEMPLATE_PARAMETERS___
   },
   {
     "type": "CHECKBOX",
+    "name": "overWriteCMRegionDefaults",
+    "checkboxText": "Overwrite Google Consent Mode defaults (Regionally)",
+    "simpleValueType": true
+  },
+  {
+    "type": "PARAM_TABLE",
+    "name": "regionParams",
+    "displayName": "Region specific defaults",
+    "paramTableColumns": [
+      {
+        "param": {
+          "type": "TEXT",
+          "name": "region",
+          "displayName": "Region code",
+          "simpleValueType": true,
+          "valueHint": "eg. US, US-CA, RO",
+          "valueValidators": [
+            {
+              "type": "NON_EMPTY"
+            }
+          ],
+          "help": "View https://en.wikipedia.org/wiki/ISO_3166-2"
+        },
+        "isUnique": false
+      },
+      {
+        "param": {
+          "type": "SELECT",
+          "name": "ad_storage",
+          "displayName": "ad_storage",
+          "macrosInSelect": false,
+          "selectItems": [
+            {
+              "value": false,
+              "displayValue": "don\u0027t overwrite"
+            },
+            {
+              "value": "denied",
+              "displayValue": "denied"
+            },
+            {
+              "value": "granted",
+              "displayValue": "granted"
+            }
+          ],
+          "simpleValueType": true
+        },
+        "isUnique": false
+      },
+      {
+        "param": {
+          "type": "SELECT",
+          "name": "analytics_storage",
+          "displayName": "analytics_storage",
+          "macrosInSelect": false,
+          "selectItems": [
+            {
+              "value": false,
+              "displayValue": "don\u0027t overwrite"
+            },
+            {
+              "value": "denied",
+              "displayValue": "denied"
+            },
+            {
+              "value": "granted",
+              "displayValue": "granted"
+            }
+          ],
+          "simpleValueType": true
+        },
+        "isUnique": false
+      },
+      {
+        "param": {
+          "type": "SELECT",
+          "name": "ad_user_data",
+          "displayName": "ad_user_data",
+          "macrosInSelect": false,
+          "selectItems": [
+            {
+              "value": false,
+              "displayValue": "don\u0027t overwrite"
+            },
+            {
+              "value": "denied",
+              "displayValue": "denied"
+            },
+            {
+              "value": "granted",
+              "displayValue": "granted"
+            }
+          ],
+          "simpleValueType": true
+        },
+        "isUnique": false
+      },
+      {
+        "param": {
+          "type": "SELECT",
+          "name": "ad_personalization",
+          "displayName": "ad_personalization",
+          "macrosInSelect": false,
+          "selectItems": [
+            {
+              "value": false,
+              "displayValue": "don\u0027t overwrite"
+            },
+            {
+              "value": "denied",
+              "displayValue": "denied"
+            },
+            {
+              "value": "granted",
+              "displayValue": "granted"
+            }
+          ],
+          "simpleValueType": true
+        },
+        "isUnique": false
+      },
+      {
+        "param": {
+          "type": "SELECT",
+          "name": "personalization_storage",
+          "displayName": "personalization_storage",
+          "macrosInSelect": false,
+          "selectItems": [
+            {
+              "value": false,
+              "displayValue": "don\u0027t overwrite"
+            },
+            {
+              "value": "denied",
+              "displayValue": "denied"
+            },
+            {
+              "value": "granted",
+              "displayValue": "granted"
+            }
+          ],
+          "simpleValueType": true
+        },
+        "isUnique": false
+      },
+      {
+        "param": {
+          "type": "SELECT",
+          "name": "functionality_storage",
+          "displayName": "functionality_storage",
+          "macrosInSelect": false,
+          "selectItems": [
+            {
+              "value": false,
+              "displayValue": "don\u0027t overwrite"
+            },
+            {
+              "value": "denied",
+              "displayValue": "denied"
+            },
+            {
+              "value": "granted",
+              "displayValue": "granted"
+            }
+          ],
+          "simpleValueType": true
+        },
+        "isUnique": false
+      },
+      {
+        "param": {
+          "type": "SELECT",
+          "name": "security_storage",
+          "displayName": "security_storage",
+          "macrosInSelect": false,
+          "selectItems": [
+            {
+              "value": false,
+              "displayValue": "don\u0027t overwrite"
+            },
+            {
+              "value": "denied",
+              "displayValue": "denied"
+            },
+            {
+              "value": "granted",
+              "displayValue": "granted"
+            }
+          ],
+          "simpleValueType": true
+        },
+        "isUnique": false
+      }
+    ],
+    "newRowTitle": "Add region",
+    "enablingConditions": [
+      {
+        "paramName": "overWriteCMRegionDefaults",
+        "paramValue": true,
+        "type": "EQUALS"
+      }
+    ],
+    "newRowButtonText": "Add region"
+  },
+  {
+    "type": "CHECKBOX",
     "name": "testMode",
     "checkboxText": "Use tag in test mode",
     "simpleValueType": true
@@ -257,6 +463,41 @@ let consentHost = data.testMode ? data.testHost : "https://cdn.sypher.eu/consent
 let configHost = data.testMode ? data.configHost : "https://consent.sypher.eu/cnst/";
 let consentJS = consentHost + 'script.min.js?uuid=' + encodeUriComponent(data.websiteUuid);
 let configJS = encodeUri(configHost + data.websiteUuid + '.js');
+
+if (data.overWriteCMRegionDefaults) {
+  const regionParams = data.regionParams || [];
+  const consentParams = [
+    'ad_storage',
+    'analytics_storage',
+    'ad_user_data',
+    'ad_personalization',
+    'personalization_storage',
+    'functionality_storage',
+    'security_storage'
+    ];
+
+  regionParams.forEach(row => {
+
+    if (!row.region) return;
+    const regions = row.region.split(',').map(r => r.trim()).filter(r => r);
+    if (regions.length === 0) return;
+
+    let consentState = {};
+    let hasConsentParams = false;
+
+    consentParams.forEach(param => {
+      if (row[param] !== false && row[param] !== undefined) {
+        consentState[param] = row[param] || 'denied';
+        hasConsentParams = true;
+      }
+    });
+
+    if (!hasConsentParams) return;
+
+    consentState.region = regions;
+    setDefaultConsentState(consentState);
+  });
+}
 
 if (data.overWriteCMDefaults) {
     let consentState = {};
